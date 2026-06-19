@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import { ImagemGaleria } from "@/types";
 import axios from "axios";
+import { PwaInstallBanner } from "@/components/pwa-install-banner";
 
 export default function AgendarPage() {
   const router = useRouter();
@@ -125,6 +126,7 @@ export default function AgendarPage() {
           </div>
         )}
       </div>
+      <PwaInstallBanner />
 
       {/* Galeria */}
       {galeria.length > 0 && (
