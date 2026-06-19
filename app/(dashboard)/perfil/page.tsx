@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -39,6 +39,7 @@ export default function PerfilPage() {
   const {
     register: regNome,
     handleSubmit: handleNome,
+    reset: resetNome,
     formState: { errors: errorsNome }
   } = useForm<NomeForm>({
     resolver: zodResolver(nomeSchema),
@@ -57,8 +58,11 @@ export default function PerfilPage() {
   const onSaveNome = async (data: NomeForm) => {
     try {
       setLoadingNome(true);
-      const res = await api.put("/auth/perfil", { nome: data.nome });
-      if (token) setAuth(token, { ...usuario!, nome: res.data.nome });
+      await api.put("/auth/perfil", { nome: data.nome });
+
+      const meRes = await api.get("/auth/me");
+      if (token) setAuth(token, meRes.data);
+
       toast.success("Nome atualizado com sucesso!");
     } catch {
       toast.error("Erro ao atualizar nome");
@@ -82,6 +86,12 @@ export default function PerfilPage() {
       setLoadingSenha(false);
     }
   };
+
+  useEffect(() => {
+    if (usuario?.nome) {
+      resetNome({ nome: usuario.nome });
+    }
+  }, [usuario?.nome, resetNome]);
 
   return (
     <div className="space-y-6 max-w-lg">
