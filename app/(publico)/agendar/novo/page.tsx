@@ -161,56 +161,58 @@ export default function NovoAgendamentoClientePage() {
         <div className="space-y-3">
           <h2 className="font-semibold">Escolha o serviço</h2>
           {servicos.map((s) => (
-            <Card
+            <div
               key={s.id}
-              className={`cursor-pointer transition-all overflow-hidden ${servicoSelecionado?.id === s.id ? "border-primary ring-1 ring-primary" : ""}`}
               onClick={() => setServicoSelecionado(s)}
+              className={`cursor-pointer flex items-stretch rounded-xl border overflow-hidden transition-all bg-white ${
+                servicoSelecionado?.id === s.id
+                  ? "border-primary ring-1 ring-primary"
+                  : "border-gray-200"
+              }`}
             >
-              <CardContent className="p-0 flex items-stretch">
-                {/* Imagem colada na esquerda */}
-                <div className="relative w-24 h-24 flex-shrink-0">
-                  {s.imagemUrl ? (
-                    <Image
-                      src={s.imagemUrl}
-                      alt={s.nome}
-                      fill
-                      className="object-cover rounded-l-lg"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-pink-50 flex items-center justify-center rounded-l-lg">
-                      <span className="text-3xl">💅</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Conteúdo */}
-                <div className="flex-1 px-4 flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold text-sm">{s.nome}</p>
-                    {s.descricao && (
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {s.descricao}
-                      </p>
-                    )}
-                    <div className="flex items-center gap-3 mt-1.5">
-                      <span className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Clock size={11} />
-                        {s.duracaoMinutos} min
-                      </span>
-                      <span className="text-xs font-semibold text-primary flex items-center gap-1">
-                        <DollarSign size={11} />
-                        R$ {Number(s.preco).toFixed(2)}
-                      </span>
-                    </div>
+              {/* Imagem colada na esquerda */}
+              <div className="relative w-24 h-24 flex-shrink-0">
+                {s.imagemUrl ? (
+                  <Image
+                    src={s.imagemUrl}
+                    alt={s.nome}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-pink-50 flex items-center justify-center">
+                    <span className="text-3xl">💅</span>
                   </div>
-                  {servicoSelecionado?.id === s.id && (
-                    <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 ml-2">
-                      <span className="text-white text-xs">✓</span>
-                    </div>
+                )}
+              </div>
+
+              {/* Conteúdo */}
+              <div className="flex-1 px-4 flex items-center justify-between">
+                <div>
+                  <p className="font-semibold text-sm">{s.nome}</p>
+                  {s.descricao && (
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {s.descricao}
+                    </p>
                   )}
+                  <div className="flex items-center gap-3 mt-1.5">
+                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                      <Clock size={11} />
+                      {s.duracaoMinutos} min
+                    </span>
+                    <span className="text-xs font-semibold text-primary flex items-center gap-1">
+                      <DollarSign size={11} />
+                      R$ {Number(s.preco).toFixed(2)}
+                    </span>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+                {servicoSelecionado?.id === s.id && (
+                  <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 ml-2">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                )}
+              </div>
+            </div>
           ))}
           <Button
             className="w-full"
