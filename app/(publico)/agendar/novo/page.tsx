@@ -166,41 +166,49 @@ export default function NovoAgendamentoClientePage() {
               className={`cursor-pointer transition-all overflow-hidden ${servicoSelecionado?.id === s.id ? "border-primary ring-1 ring-primary" : ""}`}
               onClick={() => setServicoSelecionado(s)}
             >
-              {/* Imagem do serviço */}
-              {s.imagemUrl && (
-                <div className="relative h-32 w-full">
-                  <Image
-                    src={s.imagemUrl}
-                    alt={s.nome}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-              <CardContent className="py-4 flex items-center justify-between">
-                <div>
-                  <p className="font-medium">{s.nome}</p>
-                  {s.descricao && (
-                    <p className="text-sm text-muted-foreground">
-                      {s.descricao}
-                    </p>
+              <CardContent className="p-0 flex items-stretch">
+                {/* Imagem quadrada */}
+                <div className="relative w-28 h-28 flex-shrink-0">
+                  {s.imagemUrl ? (
+                    <Image
+                      src={s.imagemUrl}
+                      alt={s.nome}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-pink-50 flex items-center justify-center">
+                      <span className="text-3xl">💅</span>
+                    </div>
                   )}
-                  <div className="flex items-center gap-3 mt-1">
-                    <span className="text-xs text-muted-foreground flex items-center gap-1">
-                      <Clock size={12} />
-                      {s.duracaoMinutos} min
-                    </span>
-                    <span className="text-xs font-medium flex items-center gap-1">
-                      <DollarSign size={12} />
-                      R$ {Number(s.preco).toFixed(2)}
-                    </span>
-                  </div>
                 </div>
-                {servicoSelecionado?.id === s.id && (
-                  <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-xs">✓</span>
+
+                {/* Conteúdo */}
+                <div className="flex-1 p-4 flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold">{s.nome}</p>
+                    {s.descricao && (
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {s.descricao}
+                      </p>
+                    )}
+                    <div className="flex items-center gap-3 mt-2">
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Clock size={11} />
+                        {s.duracaoMinutos} min
+                      </span>
+                      <span className="text-xs font-semibold text-primary flex items-center gap-1">
+                        <DollarSign size={11} />
+                        R$ {Number(s.preco).toFixed(2)}
+                      </span>
+                    </div>
                   </div>
-                )}
+                  {servicoSelecionado?.id === s.id && (
+                    <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 ml-2">
+                      <span className="text-white text-xs">✓</span>
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           ))}
