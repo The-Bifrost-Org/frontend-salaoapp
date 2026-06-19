@@ -13,6 +13,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { ArrowLeft, ArrowRight, Clock, DollarSign } from "lucide-react";
 import apiCliente from "@/lib/api-cliente";
+import Image from "next/image";
 
 interface Funcionaria {
   funcionariaId: string;
@@ -162,9 +163,20 @@ export default function NovoAgendamentoClientePage() {
           {servicos.map((s) => (
             <Card
               key={s.id}
-              className={`cursor-pointer transition-all ${servicoSelecionado?.id === s.id ? "border-primary ring-1 ring-primary" : ""}`}
+              className={`cursor-pointer transition-all overflow-hidden ${servicoSelecionado?.id === s.id ? "border-primary ring-1 ring-primary" : ""}`}
               onClick={() => setServicoSelecionado(s)}
             >
+              {/* Imagem do serviço */}
+              {s.imagemUrl && (
+                <div className="relative h-32 w-full">
+                  <Image
+                    src={s.imagemUrl}
+                    alt={s.nome}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
               <CardContent className="py-4 flex items-center justify-between">
                 <div>
                   <p className="font-medium">{s.nome}</p>
@@ -185,7 +197,7 @@ export default function NovoAgendamentoClientePage() {
                   </div>
                 </div>
                 {servicoSelecionado?.id === s.id && (
-                  <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                  <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
                     <span className="text-white text-xs">✓</span>
                   </div>
                 )}
