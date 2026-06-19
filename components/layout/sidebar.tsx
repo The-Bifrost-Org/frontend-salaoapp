@@ -16,7 +16,8 @@ import {
   Menu,
   X,
   Images,
-  Settings
+  Settings,
+  User
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -89,6 +90,29 @@ export default function Sidebar() {
           );
         })}
       </nav>
+      <div className="p-4 border-t space-y-1">
+        <Link
+          href="/perfil"
+          onClick={() => setMobileOpen(false)}
+          className={cn(
+            "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+            pathname === "/perfil"
+              ? "bg-primary text-primary-foreground"
+              : "text-muted-foreground hover:bg-gray-100 hover:text-foreground"
+          )}
+        >
+          <User size={18} />
+          {usuario?.nome?.split(" ")[0]}
+        </Link>
+        <Button
+          variant="ghost"
+          className="w-full justify-start gap-3 text-muted-foreground"
+          onClick={handleLogout}
+        >
+          <LogOut size={18} />
+          Sair
+        </Button>
+      </div>
 
       {/* Logout */}
       <div className="p-4 border-t">
