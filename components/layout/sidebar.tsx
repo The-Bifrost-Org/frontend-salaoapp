@@ -113,18 +113,6 @@ export default function Sidebar() {
           Sair
         </Button>
       </div>
-
-      {/* Logout */}
-      <div className="p-4 border-t">
-        <Button
-          variant="ghost"
-          className="w-full justify-start gap-3 text-muted-foreground"
-          onClick={handleLogout}
-        >
-          <LogOut size={18} />
-          Sair
-        </Button>
-      </div>
     </>
   );
 
