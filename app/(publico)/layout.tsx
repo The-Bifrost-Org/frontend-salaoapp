@@ -13,7 +13,7 @@ export default function PublicoLayout({
   return (
     <div className="min-h-screen bg-pink-50">
       <header className="bg-white border-b sticky top-0 z-10">
-        <div className="max-w-lg mx-auto px-4 py-3 flex items-center gap-2">
+        <div className="max-w-md mx-auto px-4 py-3 flex items-center gap-2">
           {config?.logoUrl ? (
             <Image
               src={config.logoUrl}
@@ -29,7 +29,7 @@ export default function PublicoLayout({
         </div>
       </header>
 
-      <main className="max-w-lg mx-auto px-4 py-6">{children}</main>
+      <main className="max-w-md mx-auto px-4 py-6">{children}</main>
     </div>
   );
 }
