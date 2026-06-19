@@ -24,6 +24,9 @@ interface HorarioDia {
   ativo: boolean;
   horaInicio: string;
   horaFim: string;
+  temAlmoco: boolean;
+  inicioAlmoco: string;
+  fimAlmoco: string;
 }
 
 export default function FuncionariaHorariosPage() {
@@ -37,7 +40,14 @@ export default function FuncionariaHorariosPage() {
     Object.fromEntries(
       DIAS.map((d) => [
         d.value,
-        { ativo: false, horaInicio: "08:00", horaFim: "18:00" }
+        {
+          ativo: false,
+          horaInicio: "08:00",
+          horaFim: "18:00",
+          temAlmoco: false,
+          inicioAlmoco: "12:00",
+          fimAlmoco: "13:00"
+        }
       ])
     )
   );
@@ -49,21 +59,18 @@ export default function FuncionariaHorariosPage() {
     ])
       .then(([f, h]) => {
         setFuncionaria(f.data);
-
-        // preenche os horários existentes
-        const horariosExistentes = h.data as {
-          diaSemana: number;
-          horaInicio: string;
-          horaFim: string;
-        }[];
+        const horariosExistentes = h.data;
         if (horariosExistentes.length > 0) {
           setHorarios((prev) => {
             const novo = { ...prev };
-            horariosExistentes.forEach((he) => {
+            horariosExistentes.forEach((he: any) => {
               novo[he.diaSemana] = {
                 ativo: true,
                 horaInicio: he.horaInicio,
-                horaFim: he.horaFim
+                horaFim: he.horaFim,
+                temAlmoco: !!he.inicioAlmoco,
+                inicioAlmoco: he.inicioAlmoco ?? "12:00",
+                fimAlmoco: he.fimAlmoco ?? "13:00"
               };
             });
             return novo;
@@ -81,9 +88,16 @@ export default function FuncionariaHorariosPage() {
     }));
   };
 
+  const toggleAlmoco = (dia: number) => {
+    setHorarios((prev) => ({
+      ...prev,
+      [dia]: { ...prev[dia], temAlmoco: !prev[dia].temAlmoco }
+    }));
+  };
+
   const atualizarHora = (
     dia: number,
-    campo: "horaInicio" | "horaFim",
+    campo: "horaInicio" | "horaFim" | "inicioAlmoco" | "fimAlmoco",
     valor: string
   ) => {
     setHorarios((prev) => ({
@@ -98,7 +112,9 @@ export default function FuncionariaHorariosPage() {
       .map(([dia, h]) => ({
         diaSemana: Number(dia),
         horaInicio: h.horaInicio,
-        horaFim: h.horaFim
+        horaFim: h.horaFim,
+        inicioAlmoco: h.temAlmoco ? h.inicioAlmoco : undefined,
+        fimAlmoco: h.temAlmoco ? h.fimAlmoco : undefined
       }));
 
     try {
@@ -144,7 +160,7 @@ export default function FuncionariaHorariosPage() {
               key={dia.value}
               className={`transition-all ${h.ativo ? "border-primary" : "opacity-60"}`}
             >
-              <CardContent className="py-3">
+              <CardContent className="py-3 space-y-2">
                 <div className="flex items-center gap-3">
                   {/* Toggle dia */}
                   <button
@@ -161,7 +177,6 @@ export default function FuncionariaHorariosPage() {
 
                   <span className="w-8 text-sm font-medium">{dia.label}</span>
 
-                  {/* Horários */}
                   {h.ativo ? (
                     <div className="flex items-center gap-2 flex-1">
                       <Input
@@ -186,6 +201,61 @@ export default function FuncionariaHorariosPage() {
                     <span className="text-sm text-muted-foreground">Folga</span>
                   )}
                 </div>
+
+                {/* Intervalo de almoço */}
+                {h.ativo && (
+                  <div className="pl-14 space-y-2">
+                    <button
+                      type="button"
+                      onClick={() => toggleAlmoco(dia.value)}
+                      className={`text-xs px-3 py-1 rounded-full border transition-colors ${
+                        h.temAlmoco
+                          ? "bg-orange-100 text-orange-700 border-orange-300"
+                          : "text-muted-foreground border-gray-200 hover:bg-gray-50"
+                      }`}
+                    >
+                      🍽️{" "}
+                      {h.temAlmoco
+                        ? "Com intervalo de almoço"
+                        : "Adicionar intervalo de almoço"}
+                    </button>
+
+                    {h.temAlmoco && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground w-12">
+                          Almoço
+                        </span>
+                        <Input
+                          type="time"
+                          value={h.inicioAlmoco}
+                          onChange={(e) =>
+                            atualizarHora(
+                              dia.value,
+                              "inicioAlmoco",
+                              e.target.value
+                            )
+                          }
+                          className="flex-1 text-sm h-8"
+                        />
+                        <span className="text-muted-foreground text-xs">
+                          até
+                        </span>
+                        <Input
+                          type="time"
+                          value={h.fimAlmoco}
+                          onChange={(e) =>
+                            atualizarHora(
+                              dia.value,
+                              "fimAlmoco",
+                              e.target.value
+                            )
+                          }
+                          className="flex-1 text-sm h-8"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
           );
