@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/hooks/use-auth-store";
+import { useAuthInit } from "@/hooks/use-auth-init";
 import Sidebar from "@/components/layout/sidebar";
 
 export default function DashboardLayout({
@@ -13,6 +14,8 @@ export default function DashboardLayout({
   const { token } = useAuthStore();
   const router = useRouter();
   const [hydrated, setHydrated] = useState(false);
+
+  useAuthInit(); // busca dados atualizados do usuário
 
   useEffect(() => {
     setHydrated(true);
