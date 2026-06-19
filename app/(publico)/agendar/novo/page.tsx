@@ -167,32 +167,32 @@ export default function NovoAgendamentoClientePage() {
               onClick={() => setServicoSelecionado(s)}
             >
               <CardContent className="p-0 flex items-stretch">
-                {/* Imagem quadrada */}
-                <div className="relative w-28 h-28 flex-shrink-0">
+                {/* Imagem colada na esquerda */}
+                <div className="relative w-24 h-24 flex-shrink-0">
                   {s.imagemUrl ? (
                     <Image
                       src={s.imagemUrl}
                       alt={s.nome}
                       fill
-                      className="object-cover"
+                      className="object-cover rounded-l-lg"
                     />
                   ) : (
-                    <div className="w-full h-full bg-pink-50 flex items-center justify-center">
+                    <div className="w-full h-full bg-pink-50 flex items-center justify-center rounded-l-lg">
                       <span className="text-3xl">💅</span>
                     </div>
                   )}
                 </div>
 
                 {/* Conteúdo */}
-                <div className="flex-1 p-4 flex items-center justify-between">
+                <div className="flex-1 px-4 flex items-center justify-between">
                   <div>
-                    <p className="font-semibold">{s.nome}</p>
+                    <p className="font-semibold text-sm">{s.nome}</p>
                     {s.descricao && (
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {s.descricao}
                       </p>
                     )}
-                    <div className="flex items-center gap-3 mt-2">
+                    <div className="flex items-center gap-3 mt-1.5">
                       <span className="text-xs text-muted-foreground flex items-center gap-1">
                         <Clock size={11} />
                         {s.duracaoMinutos} min
