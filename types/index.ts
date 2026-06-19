@@ -30,6 +30,7 @@ export interface Servico {
   descricao?: string;
   duracaoMinutos: number;
   preco: string;
+  imagemUrl?: string;
   ativo: boolean;
 }
 
