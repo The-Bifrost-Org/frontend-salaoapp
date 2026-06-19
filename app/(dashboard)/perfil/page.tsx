@@ -35,6 +35,7 @@ export default function PerfilPage() {
   const { usuario, setAuth, token } = useAuthStore();
   const [loadingNome, setLoadingNome] = useState(false);
   const [loadingSenha, setLoadingSenha] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
 
   const {
     register: regNome,
@@ -43,7 +44,7 @@ export default function PerfilPage() {
     formState: { errors: errorsNome }
   } = useForm<NomeForm>({
     resolver: zodResolver(nomeSchema),
-    defaultValues: { nome: usuario?.nome ?? "" }
+    defaultValues: { nome: "" }
   });
 
   const {
@@ -55,14 +56,22 @@ export default function PerfilPage() {
     resolver: zodResolver(senhaSchema)
   });
 
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (hydrated && usuario?.nome) {
+      resetNome({ nome: usuario.nome });
+    }
+  }, [hydrated, usuario?.nome, resetNome]);
+
   const onSaveNome = async (data: NomeForm) => {
     try {
       setLoadingNome(true);
       await api.put("/auth/perfil", { nome: data.nome });
-
       const meRes = await api.get("/auth/me");
       if (token) setAuth(token, meRes.data);
-
       toast.success("Nome atualizado com sucesso!");
     } catch {
       toast.error("Erro ao atualizar nome");
@@ -87,11 +96,7 @@ export default function PerfilPage() {
     }
   };
 
-  useEffect(() => {
-    if (usuario?.nome) {
-      resetNome({ nome: usuario.nome });
-    }
-  }, [usuario?.nome, resetNome]);
+  if (!hydrated) return null;
 
   return (
     <div className="space-y-6 max-w-lg">
