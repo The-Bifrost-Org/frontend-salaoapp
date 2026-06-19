@@ -13,7 +13,9 @@ import {
   UserCircle,
   LogOut,
   Menu,
-  X
+  X,
+  Images,
+  Settings
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -22,7 +24,9 @@ const navItems = [
   { href: "/agendamentos", label: "Agendamentos", icon: CalendarDays },
   { href: "/funcionarias", label: "Funcionárias", icon: Users },
   { href: "/servicos", label: "Serviços", icon: Scissors },
-  { href: "/clientes", label: "Clientes", icon: UserCircle }
+  { href: "/clientes", label: "Clientes", icon: UserCircle },
+  { href: "/galeria", label: "Galeria", icon: Images },
+  { href: "/configuracoes", label: "Configurações", icon: Settings }
 ];
 
 export default function Sidebar() {
