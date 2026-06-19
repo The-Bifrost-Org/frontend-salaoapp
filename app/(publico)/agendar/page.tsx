@@ -3,13 +3,16 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useClienteStore } from "@/hooks/use-cliente-store";
+import { useConfiguracoes } from "@/hooks/use-configuracoes";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CalendarDays, LogIn, UserPlus, LogOut } from "lucide-react";
+import Image from "next/image";
 
 export default function AgendarPage() {
   const router = useRouter();
   const { cliente, logout } = useClienteStore();
+  const { config } = useConfiguracoes();
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -24,17 +27,32 @@ export default function AgendarPage() {
 
   return (
     <div className="space-y-6">
-      {/* Boas vindas */}
       <div className="text-center py-6">
-        <div className="text-5xl mb-3">💇‍♀️</div>
-        <h1 className="text-2xl font-bold">Bem-vinda ao Salão!</h1>
-        <p className="text-muted-foreground mt-1">
-          Agende seu horário de forma rápida e fácil
-        </p>
+        {config?.logoUrl ? (
+          <Image
+            src={config.logoUrl}
+            alt="Logo"
+            width={80}
+            height={80}
+            className="mx-auto rounded-full object-cover w-20 h-20 mb-3"
+          />
+        ) : (
+          <div className="text-5xl mb-3">💇‍♀️</div>
+        )}
+        <h1 className="text-2xl font-bold">
+          {config?.nomeSalao ?? "Bem-vinda ao Salão!"}
+        </h1>
+        {config?.endereco && (
+          <p className="text-sm text-muted-foreground mt-1">
+            {config.endereco}
+          </p>
+        )}
+        {config?.telefone && (
+          <p className="text-sm text-muted-foreground">{config.telefone}</p>
+        )}
       </div>
 
       {cliente ? (
-        // Cliente logado
         <div className="space-y-4">
           <Card>
             <CardContent className="py-4">
@@ -69,7 +87,6 @@ export default function AgendarPage() {
           </Button>
         </div>
       ) : (
-        // Cliente não logado
         <div className="space-y-3">
           <Button
             className="w-full h-14 text-base"

@@ -7,11 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useAuthStore } from "@/hooks/use-auth-store";
+import { useConfiguracoes } from "@/hooks/use-configuracoes";
 import api from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 
 const loginSchema = z.object({
   email: z.string().email("E-mail inválido"),
@@ -23,6 +25,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 export default function LoginPage() {
   const router = useRouter();
   const { setAuth } = useAuthStore();
+  const { config } = useConfiguracoes();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -39,14 +42,13 @@ export default function LoginPage() {
       const response = await api.post("/auth/login", data);
       const { accessToken } = response.data;
 
-      // busca dados do usuário logado
       const meResponse = await api.get("/auth/me", {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
 
       setAuth(accessToken, meResponse.data);
       toast.success("Login realizado com sucesso!");
-      router.push("/");
+      router.push("/dashboard");
     } catch {
       toast.error("E-mail ou senha inválidos");
     } finally {
@@ -55,11 +57,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-pink-50">
+      <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="text-center">
-          <div className="text-4xl mb-2">💇‍♀️</div>
-          <CardTitle className="text-2xl">SalãoApp</CardTitle>
+          {config?.logoUrl ? (
+            <Image
+              src={config.logoUrl}
+              alt="Logo"
+              width={80}
+              height={80}
+              className="mx-auto rounded-full object-cover w-20 h-20 mb-2"
+            />
+          ) : (
+            <div className="text-5xl mb-2">💇‍♀️</div>
+          )}
+          <CardTitle className="text-2xl">
+            {config?.nomeSalao ?? "SalãoApp"}
+          </CardTitle>
           <p className="text-sm text-muted-foreground">
             Faça login para acessar o painel
           </p>
