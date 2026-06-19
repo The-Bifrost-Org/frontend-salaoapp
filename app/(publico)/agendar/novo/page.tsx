@@ -171,7 +171,7 @@ export default function NovoAgendamentoClientePage() {
               }`}
             >
               {/* Imagem colada na esquerda */}
-              <div className="relative w-24 h-24 flex-shrink-0">
+              <div className="relative w-32 h-32 flex-shrink-0">
                 {s.imagemUrl ? (
                   <Image
                     src={s.imagemUrl}
@@ -181,7 +181,7 @@ export default function NovoAgendamentoClientePage() {
                   />
                 ) : (
                   <div className="w-full h-full bg-pink-50 flex items-center justify-center">
-                    <span className="text-3xl">💅</span>
+                    <span className="text-4xl">💅</span>
                   </div>
                 )}
               </div>
@@ -189,19 +189,19 @@ export default function NovoAgendamentoClientePage() {
               {/* Conteúdo */}
               <div className="flex-1 px-4 flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-sm">{s.nome}</p>
+                  <p className="font-semibold">{s.nome}</p>
                   {s.descricao && (
-                    <p className="text-xs text-muted-foreground mt-0.5">
+                    <p className="text-xs text-muted-foreground mt-1">
                       {s.descricao}
                     </p>
                   )}
-                  <div className="flex items-center gap-3 mt-1.5">
+                  <div className="flex items-center gap-3 mt-2">
                     <span className="text-xs text-muted-foreground flex items-center gap-1">
-                      <Clock size={11} />
+                      <Clock size={12} />
                       {s.duracaoMinutos} min
                     </span>
-                    <span className="text-xs font-semibold text-primary flex items-center gap-1">
-                      <DollarSign size={11} />
+                    <span className="text-sm font-semibold text-primary flex items-center gap-1">
+                      <DollarSign size={12} />
                       R$ {Number(s.preco).toFixed(2)}
                     </span>
                   </div>
